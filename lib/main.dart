@@ -8,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,7 +52,6 @@ class _MyHomePageState extends State<MyHomePage> {
     exitFee1 = btc * sellingCoinPrice * (exitFee / 100);
     diffrence = btc * sellingCoinPrice - investment - exitFee1;
     total = diffrence + investment;
-    diffrence = getNumber(diffrence, precision: 6);
   }
 
   Widget input(double width, String label, int index, {bool isDollar = true}) {
@@ -106,8 +104,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ]));
   }
 
-  double getNumber(double input, {int precision = 2}) => double.parse(
-      '$input'.substring(0, '$input'.indexOf('.') + precision + 1));
+  String formatNumber(double number) {
+    return number.toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -129,15 +129,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: height * 0.2,
                     child: Center(
                         child: Text(
-                      "Coin profit/loss calculator",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff99FEFF),
-                          fontFamily: "praise",
-                          fontSize:
+                          "Coin profit/loss calculator",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff99FEFF),
+                              fontFamily: "praise",
+                              fontSize:
                               width > height ? height * 0.1 : width * 0.1),
-                    )),
+                        )),
                   )),
               Align(
                   alignment: Alignment.bottomCenter,
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: BoxDecoration(
                         color: Color(0xff99FEFF),
                         borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(150.0))),
+                        BorderRadius.only(topLeft: Radius.circular(150.0))),
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -173,31 +173,31 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: 10.0,
                           ),
                           Text(
-                            (diffrence >= 0 ? "+" : "-") + "\$$diffrence",
+                            (diffrence >= 0 ? "+\$" : "-\$") + formatNumber(diffrence.abs()),
                             style: TextStyle(
                               fontSize:
-                                  width > height ? height * 0.1 : width * 0.1,
+                              width > height ? height * 0.1 : width * 0.1,
                               color: diffrence >= 0 ? Colors.green : Colors.red,
                             ),
                           ),
                           SizedBox(
                             height: 10.0,
                           ),
-                          Text("Total Investment Fee: \$$investmentFee1",
+                          Text("Total Investment Fee: \$${formatNumber(investmentFee1)}",
                               style: TextStyle(
                                 color: Colors.red,
                               )),
                           SizedBox(
                             height: 10.0,
                           ),
-                          Text("Total Exit Fee: \$$exitFee1",
+                          Text("Total Exit Fee: \$${formatNumber(exitFee1)}",
                               style: TextStyle(
                                 color: Colors.red,
                               )),
                           SizedBox(
                             height: 10.0,
                           ),
-                          Text("Total: \$$total",
+                          Text("Total: \$${formatNumber(total)}",
                               style: TextStyle(
                                 color: Colors.white,
                               ))
